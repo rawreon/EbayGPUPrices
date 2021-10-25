@@ -35,7 +35,7 @@ p = ggplot(msrp, mapping=aes(name , price)) +
     panel.background = element_rect(fill="#dbf0fe"),
     legend.background = element_rect(fill="#c3e7fd"), 
   ) + 
-  labs(title="Ebay prices of Sold Reference GPUs", x = "", y = "Sold Price") 
+  labs(title="Ebay prices of Sold Reference GPUs", x = "", y = "Sold Price ($ USD)") 
  
 p
 ```
