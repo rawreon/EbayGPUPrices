@@ -1,0 +1,57 @@
+---
+title: "Plotting prices of sold GPUs"
+output: html_notebook
+---
+
+```{r results='hide'}
+library(ggforce)
+library(ggplot2)
+library(dplyr)
+str(gpus)
+```
+```{r eval=FALSE}
+msrp = msrp %>% rename(price = msrp)
+```
+```{r}
+gpu_named = merge(x=gpus, y = names, by="card" ,all.x = TRUE)
+```
+```{r}
+msrp = merge(x=gpus, y = names, by="card" ,all.x = TRUE)
+```
+
+
+```{r}
+p = ggplot(msrp, mapping=aes(name , price)) + 
+  geom_sina(gpu_named, mapping= aes(name,price), color = "#003f5c" ) + 
+  geom_crossbar(msrp, mapping = aes(ymin = price, ymax = price),  size = .25, color = '#ff6361' ) + 
+  geom_linerange(msrp, mapping = aes(ymin = price, ymax = price, color = '#ff6361'),  size = .1 ) +
+  scale_colour_manual(labels = c("MSRP"), values = c("#bc5090")) +
+  scale_y_continuous(limits = c(0,3500), n.breaks = 10) +
+  coord_flip()  + 
+  theme(
+    legend.title = element_blank(), 
+    legend.position = "bottom", 
+    plot.background = element_rect(fill="#c3e7fd"), 
+    panel.background = element_rect(fill="#dbf0fe"),
+    legend.background = element_rect(fill="#c3e7fd"), 
+  ) + 
+  labs(title="Ebay prices of Sold Reference GPUs", x = "", y = "Sold Price") 
+ 
+p
+```
+```{r}
+p1 = ggplot(gpu_named, aes(price)) + geom_histogram() +facet_wrap(~card, scales = "free")+ xlim(0,4000)
+p1
+```
+
+```{r eval=FALSE}
+gpus = gpus %>% rename(date = 'date sold')
+```
+
+
+
+```{r}
+date = ggplot(gpus, aes(date, price)) + geom_point() + ylim(300,3500) + facet_wrap(~card, scales = 'free')
+date
+```
+
